@@ -1,13 +1,53 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.titleBig {
+  font-size: calc(1rem + 5.7vw);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.titleNm {
+  font-size: calc(1rem + 3vw);
+}
+
+select {
+  outline: none;
+  background: none;
+}
+
+input {
+  outline: none;
+  background: none;
+}
+
+textarea {
+  outline: none;
+  background: none;
+}
+
+.add {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(https://design-milk.com/images/2020/12/cbre-the-core-arper-1-best-office-2020.jpg);
+  background-size: cover;
+  background-size: 120%;
+  animation: space 20s infinite linear alternate;
+}
+
+.addSpace {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(https://media.npr.org/assets/img/2020/04/23/gettyimages-656544055-fe4c8329eb06318947affe3906b7ca4f0a1252c6-s1100-c50.jpg);
+  background-size: cover;
+  background-size: 270%;
+  animation: space 30s infinite linear alternate;
+  background-repeat: no-repeat;
+  height: calc(120vh);
+}
+
+@keyframes space {
+  from {
+    background-position: left;
+  }
+  to {
+    background-position: right;
+  }
 }
