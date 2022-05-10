@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet";
 import Button from "../components/Button";
 import CardSpaces from "../components/CardSpaces";
 import Content from "../layout/Content";
@@ -7,10 +6,6 @@ import { places, spaces } from "../spaces";
 function Home() {
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Home</title>
-      </Helmet>
       <div className="">
         <div className="flex items-center justify-center flex-col h-[80vh]">
           <h1 className="titleBig font-bold text-red-400">RESERVATION</h1>

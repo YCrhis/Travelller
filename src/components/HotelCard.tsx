@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const HotelCard = () => {
   return (
     <div className="shadow-md">
@@ -25,11 +27,11 @@ const HotelCard = () => {
           <i className="fa-solid fa-thumbs-up text-zinc-300 text-xl ml-4 mr-1" />
           <p className="text-sm text-zinc-400">23</p>
         </div>
-        <p className="p-2 text-zinc-500 text-justify">
+        <p className="p-2 text-zinc-500 text-justify mb-4">
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odio aperiam
           magnam, magni quas laudantium accusantium.
         </p>
-        <button className="w-[100%] m-auto py-2 bg-red-400 text-white rounded-xl">More Information</button>
+        <Link to="/place/1234" className="w-[100%] m-auto py-2 bg-red-400 text-white block text-center rounded-xl hover:bg-red-500 transition-all">More Information</Link>
       </div>
     </div>
   );
