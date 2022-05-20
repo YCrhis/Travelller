@@ -2,17 +2,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { changeImage, transition, userActions } from "../lib/animation";
 
-const SliderPlace = () => {
-  const images = [
-    "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F28%2F2021%2F07%2F28%2Fwaldorf-astoria-maldives-ithaafushi-080-TOPHOTELSWB21.jpg",
-    "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F28%2F2021%2F07%2F28%2Foberoi-amarvilas-065-TOPHOTELSWB21.jpg",
-    "https://media.cntraveler.com/photos/5b97ea9959ff057868b4ea22/5:4/w_3330,h_2664,c_limit/The-Peninsula-Bangkok_2018_The-Peninsula-Bangkok_The-Pool-11.jpg",
-    "https://i0.wp.com/theluxuryeditor.com/wp-content/uploads/2018/10/010027-01-Swimming-Pool-17900-Amanruya.jpeg?resize=1024%2C576&ssl=1",
-  ];
+interface carrousel  {
+  images:[string]
+}
 
-  const [imageSelected, setImageSelected] = useState(
-    "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F28%2F2021%2F07%2F28%2Fwaldorf-astoria-maldives-ithaafushi-080-TOPHOTELSWB21.jpg"
-  );
+const SliderPlace = ({images}:carrousel) => {
+
+  const [imageSelected, setImageSelected] = useState(images[0]);
 
   /* setTimeout(()=>{
       images.forEach((image)=>{

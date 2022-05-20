@@ -1,14 +1,32 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import SliderPlace from "../components/SliderPlace";
 import Content from "../layout/Content";
 
 const Place = () => {
+
+  const param = useParams();
+
+  const [information, setInformation] = useState<any>({})
+
+  useEffect(()=>{
+    const loadInformation = async() =>{
+      const data = await axios.get('/places/'+ param.id);
+      setInformation(data.data)
+    }
+    loadInformation();
+  },[])
+
   return (
     <Content>
-      <SliderPlace />
+      <SliderPlace 
+        images={information?.photos}
+      />
       <div className="flex xl:flex-row items-start sm:flex-col mt-7  text-zinc-500">
         <div className="xl:w-[70%] sm:w-full p-3">
           <h2 className="text-2xl font-semibold mb-3 text-zinc-700">
-            Southern beaches of mancora
+            {information?.name}
           </h2>
           <div className="flex items-center justify-between mb-[2rem] border-b-2 border-zinc-200 pb-7">
             <div className="flex items-center">
@@ -19,7 +37,7 @@ const Place = () => {
               />
               <div className="flex">
                 <div className="">
-                <h1 className="font-semibold text-lg -mb-2">Hello word company</h1>
+                <h1 className="font-semibold text-lg -mb-2">{information?.company}</h1>
                 <p>Holiday</p>
                 </div>
                 <i className="fa-solid fa-heart ml-5 text-xl mr-1 text-zinc-600" />
@@ -27,8 +45,7 @@ const Place = () => {
               </div>
             </div>
             <div className="text-right">
-              <p>N° of reservations 80</p>
-              <p><i className="fa-solid fa-phone mr-1"/> 999 999 999</p>
+              <p><i className="fa-solid fa-phone mr-1"/>{information?.phone}</p>
               </div>
           </div>
 
@@ -38,11 +55,7 @@ const Place = () => {
                 About the place
               </h3>
               <p className="p-2">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Consectetur, provident iusto neque veritatis, deserunt repellat
-                accusantium consequatur, corporis impedit aperiam sint aliquid!
-                Cum tenetur ut itaque velit laborum dignissimos sit dolor nisi
-                quas? Hic nihil, necessitatibus nobis earum totam minima?
+                {information?.descirption}
               </p>
             </div>
             <div className="">
@@ -53,7 +66,7 @@ const Place = () => {
                 <div className="flex items-center">
                   <i className="fa-solid fa-hotel mr-2"></i>
                   <p>Rooms:</p>
-                  <p className="ml-3">9</p>
+                  <p className="ml-3">{information?.rooms}</p>
                 </div>
 
                 <div className="flex items-center">

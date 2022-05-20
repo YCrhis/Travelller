@@ -2,8 +2,13 @@ import CardSpaces from "../components/CardSpaces";
 import HotelCard from "../components/HotelCard";
 import Content from "../layout/Content";
 import { places } from "../spaces";
+import { useFetch } from "../hooks/useFetch";
 
 const Search = () => {
+  const { info, load } = useFetch("http://localhost:8080/places");
+
+  console.log(info)
+
   return (
     <Content>
       <h3 className="font-semibold mb-5 mt-5">
@@ -30,25 +35,23 @@ const Search = () => {
         </select>
       </div>
       <div className="mt-10">
-        <h3 className="font-semibold mb-5">What space would like to rent?</h3>
+        <h3 className="font-semibold text-xl mb-5">
+          What space would like to rent?
+        </h3>
         <div className="grid xl:grid-cols-4 sm:grid-cols-1 md:grid-cols-2 gap-8">
-            {places.map((space) => (
-              <CardSpaces
-                key={space.id}
-                places={true}
-                {...space}
-              />
-            ))}
-          </div>
+          {places.map((space) => (
+            <CardSpaces key={space.id} places={true} {...space} />
+          ))}
+        </div>
       </div>
       <div className="mt-10">
-        <h3 className="text-xl font-semibold text-red-400 mb-5">👁  Results of your search</h3>
+        <h3 className="text-xl font-semibold  mb-5">Results of your search</h3>
         <div className="grid xl:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 gap-8">
-            {places.map((space) => (
-              <HotelCard
-              />
-            ))}
-          </div>
+          {load && ' loading'}
+          {info?.data.map((inf:any) => (
+            <HotelCard {...inf} key={inf._id} />
+          ))}
+        </div>
       </div>
     </Content>
   );

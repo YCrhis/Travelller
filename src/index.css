@@ -34,13 +34,13 @@ textarea {
 }
 
 .addSpace {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url(https://media.npr.org/assets/img/2020/04/23/gettyimages-656544055-fe4c8329eb06318947affe3906b7ca4f0a1252c6-s1100-c50.jpg);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.314), rgba(0, 0, 0, 0.412)),
+    url(https://blog-assets.busbud.com/wp-content/uploads/2019/10/Canada.png);
   background-size: cover;
-  background-size: 270%;
+  background-size: 390%;
   animation: space 30s infinite linear alternate;
   background-repeat: no-repeat;
-  height: calc(120vh);
+  height: calc(170vh);
 }
 
 @keyframes space {

@@ -1,4 +1,8 @@
+import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
+import { ChangeEvent, useContext, useState } from "react";
+import { logIn } from "../../api";
+import { AuthContext } from "../../context/UserContext";
 import { logregAction, transition, userActions } from "../../lib/animation";
 
 interface login {
@@ -7,6 +11,31 @@ interface login {
 }
 
 const Login = ({ log, setLog }: login) => {
+  const { dispatch, loading, error } = useContext(AuthContext);
+
+  const [credentials, setCredential] = useState({});
+
+  const handleLogin = async() => {
+    dispatch({ type: "LOGIN_START" });
+    try {
+      const res = await axios.post('/auth/login', credentials, {withCredentials:true});
+      console.log(res)
+      dispatch({type:"LOGIN_SUCCESS", payload:res.data.details})
+      setLog(false);
+    } catch (error: any) {
+      dispatch({ type: "LOGIN_FAILURE", payload:{message:"You are not allowed"} });
+    }
+  };
+
+  const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = target;
+    setCredential({
+      ...credentials,
+      [name]: value,
+    });
+  };
+
+
   return (
     <AnimatePresence>
       {log === true && (
@@ -37,9 +66,11 @@ const Login = ({ log, setLog }: login) => {
               <div className="flex items-center bg-zinc-200 w-[100%] p-2 rounded-full">
                 <i className="fa-solid fa-at mr-3 ml-2 text-zinc-600" />
                 <input
-                  type="text"
+                  type="email"
                   className="w-[100%]"
                   placeholder="example@gmail.com"
+                  onChange={handleChange}
+                  name="email"
                 />
               </div>
             </div>
@@ -52,14 +83,26 @@ const Login = ({ log, setLog }: login) => {
                   type="password"
                   className="w-[100%]"
                   placeholder="min 6 characters"
+                  onChange={handleChange}
+                  name="password"
                 />
               </div>
             </div>
 
-            <button className="bg-red-400 text-white m-auto block mt-7 py-2 w-full hover:bg-red-600 transition-all">
-              Login
+            <button
+              className="bg-red-400 text-white m-auto block mt-7 py-2 w-full hover:bg-red-600 transition-all"
+              onClick={() => handleLogin()}
+            >
+              {loading ? "Loading " : "Log In"}
             </button>
+            {error &&
+          <div className="text-red-400 text-center absolute bottom-10 left-0 right-0">
+            Usuario no encontrado :(
+          </div>
+          
+          }
           </motion.div>
+          
         </motion.div>
       )}
     </AnimatePresence>

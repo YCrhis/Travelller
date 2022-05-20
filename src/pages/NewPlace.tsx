@@ -1,4 +1,87 @@
+import axios from "axios";
+import { ChangeEvent, ChangeEventHandler, useState } from "react";
+import { registerPlace } from "../api";
+import Failed from "../components/modals/Failed";
+import { Success } from "../components/modals/Success";
+import { spaces } from "../spaces";
+
 const NewPlace = () => {
+
+  const [response, setResponse] = useState<string>('')
+
+  const [inputs, setInputs] = useState({
+    featured: false,
+  });
+  const [img, setImg] = useState("");
+
+  const handleChange = ({
+    target,
+  }: ChangeEvent<
+    HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+  >) => {
+    const { name, value } = target;
+    setInputs({
+      ...inputs,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async () => {
+    const data = new FormData();
+    data.append("file", img);
+    data.append("upload_preset", "upload");
+
+    try {
+      const list = await Promise.all(
+        Object.values(img).map(async (file) => {
+          const data = new FormData();
+          data.append("file", file);
+          data.append("upload_preset", "upload");
+          const uploadRes = await axios.post(
+            "https://api.cloudinary.com/v1_1/yeridi/image/upload",
+            data
+          );
+
+          const { url } = uploadRes.data;
+
+          return url;
+        })
+      );
+      const newPlace = {
+        ...inputs,
+        photos: list,
+      };
+      /* const place = await registerPlace(inputs) */
+      try {
+        await axios.post("/places", newPlace);
+        setResponse('success')
+      } catch (err) {
+        console.log(err);
+        setResponse('failured')
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleRespo = () =>{
+    if(response === "success"){
+      return <Success  setResponse={setResponse} response={response}/>
+    }
+    if(response === 'failured'){
+      return <Failed setResponse={setResponse} response={response}/>
+    }
+  }
+
+  console.log(response)
+
+  const handleCheck = ({ target }: any) => {
+    setInputs({
+      ...inputs,
+      featured: target.checked,
+    });
+  };
+
   return (
     <div className="flex items-center justify-center">
       <div className="w-[50%] addSpace xl:block md:hidden sm:hidden"></div>
@@ -16,12 +99,16 @@ const NewPlace = () => {
 
         <div className="grid xl:grid-cols-2 sm:grid-cols-1 gap-8">
           <div className="p-1">
-            <label className="text-lg text-zinc-600 mb-2 block">
-              Your Name
-            </label>
+            <label className="text-lg text-zinc-600 mb-2 block">Name</label>
             <div className="w-full bg-zinc-100 p-3 rounded-full flex items-center">
-              <i className="fa-solid fa-user mr-2" />
-              <input type="text" placeholder="Traveller" className="w-full" />
+            <i className="fa-solid fa-bell-concierge mr-2"></i>
+              <input
+                type="text"
+                placeholder="Hotel name example"
+                className="w-full"
+                onChange={handleChange}
+                name="name"
+              />
             </div>
           </div>
 
@@ -33,6 +120,8 @@ const NewPlace = () => {
                 type="text"
                 placeholder="example@gmail.com"
                 className="w-full"
+                onChange={handleChange}
+                name="email"
               />
             </div>
           </div>
@@ -43,7 +132,13 @@ const NewPlace = () => {
             </label>
             <div className="w-full bg-zinc-100 p-3 rounded-full flex items-center">
               <i className="fa-solid fa-phone mr-2" />
-              <input type="text" placeholder="999 999 999" className="w-full" />
+              <input
+                type="number"
+                placeholder="999 999 999"
+                className="w-full"
+                onChange={handleChange}
+                name="phone"
+              />
             </div>
           </div>
 
@@ -57,6 +152,8 @@ const NewPlace = () => {
                 type="text"
                 placeholder="Traveller Company"
                 className="w-full"
+                onChange={handleChange}
+                name="company"
               />
             </div>
           </div>
@@ -69,6 +166,8 @@ const NewPlace = () => {
                 type="text"
                 placeholder="Street, Avenue, etc"
                 className="w-full"
+                onChange={handleChange}
+                name="location"
               />
             </div>
           </div>
@@ -76,28 +175,96 @@ const NewPlace = () => {
           <div className="p-1">
             <label className="text-lg text-zinc-600 mb-2 block">Space</label>
             <div className="w-full bg-zinc-100 p-3 rounded-full flex items-center">
-              <i className="fa-solid fa-location-pin mr-2" />
-              <select name="" id="" className="w-full">
-                <option value="">Office</option>
-                <option value="">Free field</option>
+              <i className="fa-solid fa-earth-africa mr-2" />
+              <select
+                name="type"
+                id=""
+                className="w-full"
+                onChange={handleChange}
+              >
+                {spaces.map((space) => (
+                  <option value={space.name} key={space.id}>
+                    {space.name}
+                  </option>
+                ))}
               </select>
+            </div>
+          </div>
+
+          <div className="p-1">
+            <label className="text-lg text-zinc-600 mb-2 block">N° Rooms</label>
+            <div className="w-full bg-zinc-100 p-3 rounded-full flex items-center">
+              <i className="fa-solid fa-hotel mr-2" />
+              <input
+                type="text"
+                placeholder="Street, Avenue, etc"
+                className="w-full"
+                onChange={handleChange}
+                name="rooms"
+              />
+            </div>
+          </div>
+
+          <div className="p-1">
+            <label className="text-lg text-zinc-600 mb-2 block">Price</label>
+            <div className="w-full bg-zinc-100 p-3 rounded-full flex items-center">
+              <i className="fa-solid fa-money-bill mr-2" />
+              <input
+                type="number"
+                placeholder="00.00"
+                className="w-full"
+                onChange={handleChange}
+                name="price"
+              />
             </div>
           </div>
         </div>
         <div className="p-1 mt-5 ">
-          <label className="text-lg text-zinc-600 mb-2 block">Description</label>
+          <label className="text-lg text-zinc-600 mb-2 block">
+            Description
+          </label>
           <div className="w-full bg-zinc-100 p-3 rounded-2xl flex items-center  ">
             <textarea
-              name=""
-              id=""
+              name="descirption"
               className="w-full rounded-2xl h-[200px]"
               placeholder="The place has three rooms ...."
+              onChange={handleChange}
             ></textarea>
           </div>
         </div>
 
-        <button className="w-[80%] m-auto block mt-6 bg-red-400 text-white py-2 rounded-2xl">Send Information</button>
+        <div className="p-1">
+          <label className="text-lg text-zinc-600 mb-2 block">Featured</label>
+          <div className="w-full  p-3 rounded-full flex items-center">
+            <i className="fa-solid fa-location-pin mr-2" />
+            <p className="mr-3">Is featured?</p>
+            <input type="checkbox" name="featured" onChange={handleCheck} />
+          </div>
+        </div>
+
+        <div className="p-1">
+          <label className="text-lg text-zinc-600 mb-2 block">
+            Hotel Images
+          </label>
+          <div className="w-full  p-3 rounded-full flex items-center">
+            <i className="fa-solid fa-image mr-2" />
+            <input
+              type="file"
+              multiple
+              name="photos"
+              onChange={(e: any) => setImg(e.target.files)}
+            />
+          </div>
+        </div>
+
+        <button
+          className="w-[80%] m-auto block mt-6 bg-red-400 text-white py-2 rounded-2xl"
+          onClick={handleSubmit}
+        >
+          Send Information
+        </button>
       </div>
+      {handleRespo()}
     </div>
   );
 };
