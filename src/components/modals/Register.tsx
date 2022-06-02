@@ -38,12 +38,15 @@ const Register = ({ reg, setReg }: register) => {
         ...inputs,
         profileImg:url
       }
+      console.log(newUser)
       const user = await register(newUser)
       if (user) setSuccess(true)
     } 
     catch (error) {
       console.log(error)
     }
+
+   
     
   }
 

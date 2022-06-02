@@ -3,24 +3,33 @@ import axios, { AxiosResponse } from "axios";
 
 
 export const useFetch = (url: string) => {
-  const [info, setInfo] = useState<AxiosResponse | null | void>(null);
+  const [info, setInfo] = useState<AxiosResponse | any | void>(null);
   const [load, setLoad] = useState(false);
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    
     const loadData = async() => {
       setLoad(true);
-      try {
-        setLoad(true);
-        const data = await axios.get(url);
-        setInfo(data);
-      } catch (err) {
-        setError(true);
+      if(info){
+        try {
+          setLoad(true);
+          const data = await axios.get(url);
+          setInfo(data);
+        } catch (err) {
+          setError(true);
+        }
+        
+      }else{
+        const data = await axios.get("http://localhost:8080/places")
+        setInfo(data)
       }
+      
       setLoad(false);
     };
+    
     loadData();
-  }, []);
+  }, [url]);
 
   return { info, load, error };
 };

@@ -2,11 +2,19 @@ import Button from "../components/Button";
 import CardSpaces from "../components/CardSpaces";
 import Content from "../layout/Content";
 import { places, spaces } from "../spaces";
+import {motion} from "framer-motion"
+import { pageAnimation, transition, transition2 } from "../lib/animation";
 
 function Home() {
   return (
     <>
-      <div className="">
+      <motion.div 
+        initial="out"
+        animate="in"
+        exit="out"
+        variants={pageAnimation}
+        transition={transition2}
+      >
         <div className="flex items-center justify-center flex-col h-[80vh]">
           <h1 className="titleBig font-bold text-red-400">RESERVATION</h1>
           <h3 className="titleNm">
@@ -16,14 +24,13 @@ function Home() {
           <div className="flex mt-7 text-2xl">
             <p className="">Cities |</p>
             <select name="" id="" className="px-5">
-              <option value="">Peru</option>
-              <option value="">Peru</option>
-              <option value="">Peru</option>
-              <option value="">Peru</option>
+              {spaces.map(place =>(
+                <option value={place.name} key={place.id}>{place.name}</option>
+              ))}
             </select>
           </div>
           <div className="text-xl mt-6">
-            <Button name="Search" />
+            <Button name="Search" link={'/search'} />
           </div>
         </div>
         <Content>
@@ -106,11 +113,11 @@ function Home() {
               Voluptate quis, <br /> laudantium deserunt soluta illo veritatis?
             </p>
             <div className="xl:w-[30%] sm:w-[60%]">
-              <Button name="Add Your Place" />
+              <Button name="Add Your Place" link="/new"/>
             </div>
           </div>
         </Content>
-      </div>
+      </motion.div>
     </>
   );
 }

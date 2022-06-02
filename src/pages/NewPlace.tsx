@@ -1,13 +1,13 @@
 import axios from "axios";
-import { ChangeEvent, ChangeEventHandler, useState } from "react";
-import { registerPlace } from "../api";
+import { ChangeEvent, useState } from "react";
+import { motion } from "framer-motion";
 import Failed from "../components/modals/Failed";
 import { Success } from "../components/modals/Success";
 import { spaces } from "../spaces";
+import { pageAnimation, transition2 } from "../lib/animation";
 
 const NewPlace = () => {
-
-  const [response, setResponse] = useState<string>('')
+  const [response, setResponse] = useState<string>("");
 
   const [inputs, setInputs] = useState({
     featured: false,
@@ -39,13 +39,13 @@ const NewPlace = () => {
           data.append("upload_preset", "upload");
           const uploadRes = await axios.post(
             "https://api.cloudinary.com/v1_1/yeridi/image/upload",
-            data
+            data,
           );
 
           const { url } = uploadRes.data;
 
           return url;
-        })
+        }),
       );
       const newPlace = {
         ...inputs,
@@ -54,26 +54,26 @@ const NewPlace = () => {
       /* const place = await registerPlace(inputs) */
       try {
         await axios.post("/places", newPlace);
-        setResponse('success')
+        setResponse("success");
       } catch (err) {
         console.log(err);
-        setResponse('failured')
+        setResponse("failured");
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleRespo = () =>{
-    if(response === "success"){
-      return <Success  setResponse={setResponse} response={response}/>
+  const handleRespo = () => {
+    if (response === "success") {
+      return <Success setResponse={setResponse} response={response} />;
     }
-    if(response === 'failured'){
-      return <Failed setResponse={setResponse} response={response}/>
+    if (response === "failured") {
+      return <Failed setResponse={setResponse} response={response} />;
     }
-  }
+  };
 
-  console.log(response)
+  console.log(response);
 
   const handleCheck = ({ target }: any) => {
     setInputs({
@@ -83,7 +83,14 @@ const NewPlace = () => {
   };
 
   return (
-    <div className="flex items-center justify-center">
+    <motion.div
+      className="flex items-center justify-center"
+      initial="out"
+      animate="in"
+      exit="out"
+      variants={pageAnimation}
+      transition={transition2}
+    >
       <div className="w-[50%] addSpace xl:block md:hidden sm:hidden"></div>
       <div className="xL:w-[70%] sm:w-[100%] py-7 xl:px-[5rem] md:px-[8rem] sm:px-[2rem]">
         <div className="">
@@ -101,7 +108,7 @@ const NewPlace = () => {
           <div className="p-1">
             <label className="text-lg text-zinc-600 mb-2 block">Name</label>
             <div className="w-full bg-zinc-100 p-3 rounded-full flex items-center">
-            <i className="fa-solid fa-bell-concierge mr-2"></i>
+              <i className="fa-solid fa-bell-concierge mr-2"></i>
               <input
                 type="text"
                 placeholder="Hotel name example"
@@ -229,7 +236,8 @@ const NewPlace = () => {
               className="w-full rounded-2xl h-[200px]"
               placeholder="The place has three rooms ...."
               onChange={handleChange}
-            ></textarea>
+            >
+            </textarea>
           </div>
         </div>
 
@@ -265,7 +273,7 @@ const NewPlace = () => {
         </button>
       </div>
       {handleRespo()}
-    </div>
+    </motion.div>
   );
 };
 

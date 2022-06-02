@@ -38,9 +38,13 @@ textarea {
     url(https://blog-assets.busbud.com/wp-content/uploads/2019/10/Canada.png);
   background-size: cover;
   background-size: 390%;
-  animation: space 30s infinite linear alternate;
+  animation: space 60s infinite linear alternate;
   background-repeat: no-repeat;
   height: calc(170vh);
+}
+
+.image {
+  filter: brightness(50%);
 }
 
 @keyframes space {
