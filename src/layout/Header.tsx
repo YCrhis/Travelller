@@ -5,6 +5,7 @@ import Login from "../components/modals/Login";
 import Profile from "../components/modals/Profile";
 import Register from "../components/modals/Register";
 import { AuthContext } from "../context/UserContext";
+import { CardContext } from "../context/CardContext";
 
 const Header = () => {
   const [log, setLog] = useState(false);
@@ -12,8 +13,10 @@ const Header = () => {
   const [pro, setPro] = useState(false);
   let [open, setOpen] = useState(false);
 
-
   const { user, dispatch } = useContext(AuthContext);
+
+
+  const {card} = useContext(CardContext)
 
   const handleLogOut = () => {
     dispatch({ type: "LOGOUT" });
@@ -52,11 +55,11 @@ const Header = () => {
               open ? "top-20 " : "top-[-490px]"
             }`}
           >
-            {!user
+            {Object.keys(user).length === 0
               ? (
                 <>
                   <li>
-                    <Button name="Add Space" link="/new"/>
+                    <Button name="Add Space" link="/new" />
                   </li>
                   <li>
                     <div
@@ -79,14 +82,19 @@ const Header = () => {
                 </>
               )
               : (
-                <li >
+                <li>
                   <div className="flex md:flex-row sm:flex-col items-center">
                     <img
                       src="https://pictures.betaseries.com/banners/episodes/288120/5375651.jpg"
                       alt=""
                       className="w-[40px] h-[40px] object-cover rounded-full mr-3"
                     />
-                    <p className="font-bold text-xl mr-3 cursor-pointer" onClick={() => setPro(!pro)}>{user.name}</p>
+                    <p
+                      className="font-bold text-xl mr-3 cursor-pointer"
+                      onClick={() => setPro(!pro)}
+                    >
+                      {user.name}
+                    </p>
 
                     <Button name="Add Space" link="/new" />
                     <button
@@ -95,6 +103,14 @@ const Header = () => {
                     >
                       LogOut
                     </button>
+                    <Link to="/">
+                      <div className="relative">
+                        <i className="fa-solid fa-cart-shopping text-2xl"></i>
+                        <div className="absolute -top-2 -right-1 bg-red-400 px-[4px] rounded-full text-sm text-white">
+                          {card.length}
+                        </div>
+                      </div>
+                    </Link>
                   </div>
                 </li>
               )}
@@ -103,7 +119,7 @@ const Header = () => {
       </div>
       <Login log={log} setLog={setLog} />
       <Register reg={reg} setReg={setReg} />
-      <Profile pro={pro} setPro={setPro}/>
+      <Profile pro={pro} setPro={setPro} />
     </>
   );
 };

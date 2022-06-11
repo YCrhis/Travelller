@@ -1,25 +1,45 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import SliderPlace from "../components/SliderPlace";
 import Content from "../layout/Content";
 import { motion } from "framer-motion";
 import { pageAnimation, transition2 } from "../lib/animation";
+import { CardContext } from "../context/CardContext";
 
 const Place = () => {
+  const { dispatch, card } = useContext(CardContext);
+
   const param = useParams();
 
   const [information, setInformation] = useState<any>({});
+  const [isLoved, setIsLoved] = useState<any>();
 
   useEffect(() => {
     const loadInformation = async () => {
       const data = await axios.get("/places/" + param.id);
       setInformation(data.data);
+      await card.map((ca:any)=>{
+        if(ca.id ===  information._id){
+          setIsLoved(true)
+          return;
+        }else{
+          setIsLoved(false)
+        }
+        
+      })
     };
-    loadInformation();
-  }, []);
 
-  console.log(information);
+    loadInformation();
+  }, [isLoved]);
+
+  const handleLove = async() => {
+    await dispatch({ type: "ADD_CARD", payload: {
+      id:information._id,
+      name:information.name,
+      photos:information.photos
+    } });
+  };
 
   return (
     <motion.div
@@ -109,9 +129,18 @@ const Place = () => {
                 <span className="font-bold">$/{information.price}</span> per day
               </h1>
               <div className="text-xl p-3">
-                <button className="block w-full py-1 bg-red-400 rounded-xl text-white mt-3 text-base">
-                  I like it
-                </button>
+                {isLoved === false ? 
+                <button
+                className="block w-full py-1 bg-red-400 rounded-xl text-white mt-3 text-base"
+                onClick={handleLove}
+              >       
+                Adding to Favourites <i className="fa-solid fa-heart"></i>
+              </button>
+              :
+              <p>Gustado</p>
+              
+              }
+                
                 <button className="block w-full py-1 bg-red-400 rounded-xl text-white mt-3 text-base">
                   Recerve Place
                 </button>

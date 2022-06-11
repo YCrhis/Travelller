@@ -4,6 +4,7 @@ import { ChangeEvent, useContext, useState } from "react";
 import { logIn } from "../../api";
 import { AuthContext } from "../../context/UserContext";
 import { logregAction, transition, userActions } from "../../lib/animation";
+import { useNavigate } from "react-router-dom";
 
 interface login {
   log: any;
@@ -11,19 +12,27 @@ interface login {
 }
 
 const Login = ({ log, setLog }: login) => {
+  let navigate = useNavigate();
   const { dispatch, loading, error } = useContext(AuthContext);
 
   const [credentials, setCredential] = useState({});
 
-  const handleLogin = async() => {
+  const handleLogin = async () => {
     dispatch({ type: "LOGIN_START" });
     try {
-      const res = await axios.post('/auth/login', credentials, {withCredentials:true});
-      console.log(res, ' este es')
-      dispatch({type:"LOGIN_SUCCESS", payload:res.data.details})
+      const res = await axios.post("/auth/login", credentials, {
+        withCredentials: true,
+      });
+      dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
+      if (res.data.isAdmin === true) {
+        navigate('/admin')
+      }
       setLog(false);
     } catch (error: any) {
-      dispatch({ type: "LOGIN_FAILURE", payload:{message:"You are not allowed"} });
+      dispatch({
+        type: "LOGIN_FAILURE",
+        payload: { message: "You are not allowed" },
+      });
     }
   };
 
@@ -34,7 +43,6 @@ const Login = ({ log, setLog }: login) => {
       [name]: value,
     });
   };
-
 
   return (
     <AnimatePresence>
@@ -96,13 +104,12 @@ const Login = ({ log, setLog }: login) => {
               {loading ? "Loading " : "Log In"}
             </button>
             {error &&
-          <div className="text-red-400 text-center absolute bottom-10 left-0 right-0">
-            Usuario no encontrado :(
-          </div>
-          
-          }
+              (
+                <div className="text-red-400 text-center absolute bottom-10 left-0 right-0">
+                  Usuario no encontrado :(
+                </div>
+              )}
           </motion.div>
-          
         </motion.div>
       )}
     </AnimatePresence>

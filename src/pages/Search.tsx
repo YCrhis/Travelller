@@ -7,6 +7,7 @@ import { ChangeEvent, useState } from "react";
 import NotFound from "../components/NotFound";
 import { motion } from "framer-motion";
 import { pageAnimation, transition2 } from "../lib/animation";
+import Loading from "../components/Loading";
 
 interface space {
   name: string;
@@ -20,7 +21,7 @@ const Search = () => {
     max: "",
   });
 
-  const { info, load } = useFetch(
+  const { info, load, error } = useFetch(
     `http://localhost:8080/places?type=${filters?.space}&min=${filters
       ?.min}&max=${filters?.max}`,
   );
@@ -103,8 +104,8 @@ const Search = () => {
               <NotFound />
             </div>
           )}
+          {load && <Loading/>}
           <div className="grid xl:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 gap-8 ">
-            {load && " loading"}
             {info?.data.map((inf: any) => <HotelCard {...inf} key={inf._id} />)}
           </div>
         </div>

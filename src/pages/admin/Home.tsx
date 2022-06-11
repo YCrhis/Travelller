@@ -1,38 +1,70 @@
-import CardlocatAdmin from "../../components/CardlocatAdmin"
-import CardSpaces from "../../components/CardSpaces"
-import UsersTable from "../../components/UsersTable"
-import ContAdmin from "../../layout/admin/ContAdmin"
-import { places } from "../../spaces"
+import axios from "axios";
+import { useEffect, useState } from "react";
+import CardlocatAdmin from "../../components/CardlocatAdmin";
+import UsersTable from "../../components/UsersTable";
+import ContAdmin from "../../layout/admin/ContAdmin";
+import { places, spaces } from "../../spaces";
 
 const HomeAdmin = () => {
+
+  const [count, setCount] = useState<any>()
+  const [users, setUsers] = useState<any>()
+
+  const loadCount = async() =>{
+    const data = await axios.get('/places/types/count?type=Open Fields,Restaurant,Office,Hotel');
+    setCount(data?.data)
+  }
+
+  const loadUsers = async() =>{
+    const data = await axios.get('/users?limit=5');
+    setUsers(data)
+  }
+
+  console.log(users)
+
+  useEffect(()=>{
+    loadCount()
+    loadUsers()
+  },[])
+
+
   return (
     <ContAdmin>
-      <h1 className="text-zinc-500">Inicial <i className="fa-solid fa-arrow-right"/> Home</h1>
-
-      <div className="grid xl:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 gap-8">
-        <CardlocatAdmin/>
-        <CardlocatAdmin/>
-        <CardlocatAdmin/>
+      <h1 className="text-zinc-500">HOME</h1>
+      <h1 className="text-xl text-zinc-600 mt-[3rem] mb-6 border-l-4 border-blue-400 px-2">
+        Places
+      </h1>
+      <div className="grid xl:grid-cols-4 sm:grid-cols-1 md:grid-cols-2 gap-8">
+        {spaces.map((space,index)=>(
+          <CardlocatAdmin
+            key={space.id}
+            {...space}
+            count={count}
+          />
+        ))}
       </div>
-
-      <h1 className="text-xl text-zinc-600 mt-7 mb-6 border-l-4 border-green-400 px-2">Recent User</h1>
-      <div className="p-3 w-[95%] m-auto">
-        <UsersTable/>
+      <div className="flex items-center">
+        <div className="w-[100%]">
+          <h1 className="text-xl text-zinc-600 mt-[3rem] mb-3 border-l-4 border-blue-400 px-2">
+            Recent User
+          </h1>
+          <div className="p-3 w-[95%] m-auto">
+            <UsersTable 
+              {...users}
+            />
+          </div>
+        </div>
+        <div className="w-[100%]">
+          <h1 className="text-xl text-zinc-600 mt-[3rem] mb-3 border-l-4 border-blue-400 px-2">
+            Locations
+          </h1>
+          <div className="p-3 w-[95%] m-auto">
+            <UsersTable />
+          </div>
+        </div>
       </div>
-
-
-      <h1 className="text-xl text-zinc-600 mt-7 mb-6 border-l-4 border-blue-400 px-2">Locations</h1>
-      <div className="grid xl:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 gap-8 w-[90%] m-auto">
-              {places.map((space) => (
-                <CardSpaces
-                  key={space.id}
-                  places={true}
-                  {...space}
-                />
-              ))}
-            </div>
     </ContAdmin>
-  )
-}
+  );
+};
 
-export default HomeAdmin
+export default HomeAdmin;

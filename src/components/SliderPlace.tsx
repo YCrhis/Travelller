@@ -9,7 +9,6 @@ interface carrousel {
 
 const SliderPlace = ({ images, name }: carrousel) => {
 
-  console.log(images?.slice(1), ' este es')
 
   const [imageSelected, setImageSelected] = useState('https://p4.wallpaperbetter.com/wallpaper/772/542/489/room-interior-design-resort-window-wallpaper-preview.jpg');
 
