@@ -10,6 +10,7 @@ import { AnimatePresence } from "framer-motion";
 import Users from "../pages/admin/Users";
 import Places from "../pages/admin/Places";
 import PlacesAllowed from "../pages/admin/PlacesAllowed";
+import Favourites from "../pages/Favourites";
 
 function Routers() {
   const location = useLocation();
@@ -23,6 +24,7 @@ function Routers() {
             <Route path="/search" element={<Search />} />
             <Route path="/new" element={<NewPlace />} />
             <Route path="/place/:id" element={<Place />} />
+            <Route path="/favourites" element={<Favourites />} />
           </Route>
           <Route path="admin/" element={<App />}>
             <Route index element={<HomeAdmin />} />

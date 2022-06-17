@@ -35,7 +35,7 @@ const Footer = () => {
             </ul>
           </div>
         </div>
-        <p className="text-zinc-200 mt-6 mb-7">&copy; Traveller created 2022 </p>
+        <p className="text-zinc-200 mt-6 mb-7">&copy; Traveller created 2022 by Yeridi Crhis</p>
       </div>
     </div>
   );

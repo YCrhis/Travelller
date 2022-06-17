@@ -103,7 +103,7 @@ const Header = () => {
                     >
                       LogOut
                     </button>
-                    <Link to="/">
+                    <Link to="/favourites">
                       <div className="relative">
                         <i className="fa-solid fa-cart-shopping text-2xl"></i>
                         <div className="absolute -top-2 -right-1 bg-red-400 px-[4px] rounded-full text-sm text-white">

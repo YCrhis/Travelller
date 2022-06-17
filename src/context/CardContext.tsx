@@ -38,9 +38,6 @@ export const CardContextProvider = ({ children }: any) => {
     localStorage.setItem("card", JSON.stringify(state.card));
   }, [state.card]);
 
-  const addingCard = (card: any): any => {
-    dispatch({ type: "ADD_CARD", payload: card });
-  };
 
   return (
     <CardContext.Provider

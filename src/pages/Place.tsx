@@ -13,32 +13,31 @@ const Place = () => {
   const param = useParams();
 
   const [information, setInformation] = useState<any>({});
-  const [isLoved, setIsLoved] = useState<any>();
+  const [isLoved, setIsLoved] = useState<any>(false);
 
   useEffect(() => {
     const loadInformation = async () => {
       const data = await axios.get("/places/" + param.id);
       setInformation(data.data);
-      await card.map((ca:any)=>{
-        if(ca.id ===  information._id){
-          setIsLoved(true)
-          return;
-        }else{
-          setIsLoved(false)
-        }
-        
-      })
+      card.filter((c: any) =>
+        c.id === param.id ? setIsLoved(true) : setIsLoved(false)
+      );
     };
-
     loadInformation();
   }, [isLoved]);
 
-  const handleLove = async() => {
-    await dispatch({ type: "ADD_CARD", payload: {
-      id:information._id,
-      name:information.name,
-      photos:information.photos
-    } });
+  console.log(information)
+
+  const handleLove = async () => {
+    await dispatch({
+      type: "ADD_CARD",
+      payload: {
+        id: information._id,
+        name: information.name,
+        photos: information.photos,
+        companyName:information.company
+      },
+    });
   };
 
   return (
@@ -129,18 +128,20 @@ const Place = () => {
                 <span className="font-bold">$/{information.price}</span> per day
               </h1>
               <div className="text-xl p-3">
-              <button
-                className="block w-full py-1 bg-red-400 rounded-xl text-white mt-3 text-base"
-                onClick={handleLove}
-              >       
-                Adding to Favourites <i className="fa-solid fa-heart"></i>
-              </button>
-                {/* {isLoved === false ? 
-                
-              :
-              <p>Gustado</p>
-              
-              } */}
+                {isLoved
+                  ? (
+                    <button className="block w-full py-1 bg-red-400 rounded-xl text-white mt-3 text-base">
+                      View in Cart <i className="fa-solid fa-cart-shopping text-xl"></i>
+                    </button>
+                  )
+                  : (
+                    <button
+                      className="block w-full py-1 bg-red-400 rounded-xl text-white mt-3 text-base"
+                      onClick={handleLove}
+                    >
+                      Adding to Favourites <i className="fa-solid fa-heart"></i>
+                    </button>
+                  )}
               </div>
             </div>
           </div>
