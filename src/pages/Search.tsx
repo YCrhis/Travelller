@@ -22,7 +22,7 @@ const Search = () => {
   });
 
   const { info, load, error } = useFetch(
-    `http://localhost:8080/places?type=${filters?.space}&min=${filters
+    `/places?type=${filters?.space}&min=${filters
       ?.min}&max=${filters?.max}`,
   );
 

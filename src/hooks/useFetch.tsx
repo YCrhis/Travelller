@@ -21,7 +21,7 @@ export const useFetch = (url: string) => {
         }
         
       }else{
-        const data = await axios.get("http://localhost:8080/places")
+        const data = await axios.get("/places")
         setInfo(data)
       }
       
