@@ -15,11 +15,11 @@ const Header = () => {
 
   const { user, dispatch } = useContext(AuthContext);
 
-
-  const {card} = useContext(CardContext)
+  const {card, dispatch:nuevoDispatch} = useContext(CardContext)
 
   const handleLogOut = () => {
     dispatch({ type: "LOGOUT" });
+    nuevoDispatch({type:"REMOVE_ALL"})
   };
 
   return (
@@ -55,7 +55,7 @@ const Header = () => {
               open ? "top-20 " : "top-[-490px]"
             }`}
           >
-            {Object.keys(user).length === 0
+            {!user
               ? (
                 <>
                   <li>
@@ -85,7 +85,7 @@ const Header = () => {
                 <li>
                   <div className="flex md:flex-row sm:flex-col items-center">
                     <img
-                      src="https://pictures.betaseries.com/banners/episodes/288120/5375651.jpg"
+                      src={user?.profileImg}
                       alt=""
                       className="w-[40px] h-[40px] object-cover rounded-full mr-3"
                     />
@@ -93,7 +93,7 @@ const Header = () => {
                       className="font-bold text-xl mr-3 cursor-pointer"
                       onClick={() => setPro(!pro)}
                     >
-                      {user.name}
+                      {user?.name}
                     </p>
 
                     <Button name="Add Space" link="/new" />

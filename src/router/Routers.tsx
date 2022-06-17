@@ -7,6 +7,9 @@ import Place from "../pages/Place";
 import Search from "../pages/Search";
 import HomeAdmin from "../pages/admin/Home";
 import { AnimatePresence } from "framer-motion";
+import Users from "../pages/admin/Users";
+import Places from "../pages/admin/Places";
+import PlacesAllowed from "../pages/admin/PlacesAllowed";
 
 function Routers() {
   const location = useLocation();
@@ -23,6 +26,9 @@ function Routers() {
           </Route>
           <Route path="admin/" element={<App />}>
             <Route index element={<HomeAdmin />} />
+            <Route  path="users" element={<Users/>}/>
+            <Route  path="places" element={<Places/>}/>
+            <Route  path="places/allowed" element={<PlacesAllowed/>}/>
           </Route>
         </Routes>
       </AnimatePresence>

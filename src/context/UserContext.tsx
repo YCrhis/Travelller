@@ -1,7 +1,7 @@
 import { createContext, useEffect, useReducer,type Dispatch } from "react";
 
 const INITIAL_STATE = {
-  user: JSON.parse(localStorage.getItem('user') || '{}'),
+  user: JSON.parse(localStorage.getItem('user') || 'null'),
   loading: false,
   error: null,
   dispatch: (() => undefined) as Dispatch<any>,

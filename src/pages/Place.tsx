@@ -129,21 +129,18 @@ const Place = () => {
                 <span className="font-bold">$/{information.price}</span> per day
               </h1>
               <div className="text-xl p-3">
-                {isLoved === false ? 
-                <button
+              <button
                 className="block w-full py-1 bg-red-400 rounded-xl text-white mt-3 text-base"
                 onClick={handleLove}
               >       
                 Adding to Favourites <i className="fa-solid fa-heart"></i>
               </button>
+                {/* {isLoved === false ? 
+                
               :
               <p>Gustado</p>
               
-              }
-                
-                <button className="block w-full py-1 bg-red-400 rounded-xl text-white mt-3 text-base">
-                  Recerve Place
-                </button>
+              } */}
               </div>
             </div>
           </div>
