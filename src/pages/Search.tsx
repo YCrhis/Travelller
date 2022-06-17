@@ -22,7 +22,7 @@ const Search = () => {
   });
 
   const { info, load, error } = useFetch(
-    `/places?type=${filters?.space}&min=${filters
+    `https://travelnew.herokuapp.com/places?type=${filters?.space}&min=${filters
       ?.min}&max=${filters?.max}`,
   );
 

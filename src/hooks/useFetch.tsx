@@ -21,7 +21,7 @@ export const useFetch = (url: string) => {
         }
         
       }else{
-        const data = await axios.get("/places")
+        const data = await axios.get("https://travelnew.herokuapp.com/places")
         setInfo(data)
       }
       
