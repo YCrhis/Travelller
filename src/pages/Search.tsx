@@ -22,7 +22,7 @@ const Search = () => {
   });
 
   const { info, load, error } = useFetch(
-    `/places?type=${filters?.space}&min=${filters
+    `/api/places?type=${filters?.space}&min=${filters
       ?.min}&max=${filters?.max}`,
   );
 
@@ -99,14 +99,14 @@ const Search = () => {
           <h3 className="text-xl font-semibold  mb-5">
             Results of your search
           </h3>
-          {info?.data.length === 0 && (
+          {info?.data?.length === 0 && (
             <div className="">
               <NotFound />
             </div>
           )}
           {load && <Loading/>}
           <div className="grid xl:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 gap-8 ">
-            {info?.data.map((inf: any) => <HotelCard {...inf} key={inf._id} />)}
+            {info?.data?.map((inf: any) => <HotelCard {...inf} key={inf._id} />)}
           </div>
         </div>
       </Content>

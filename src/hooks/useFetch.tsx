@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from "axios";
 
 
 export const useFetch = (url: string) => {
-  const [info, setInfo] = useState<AxiosResponse | any | void>(null);
+  const [info, setInfo] = useState<AxiosResponse | any | void>([]);
   const [load, setLoad] = useState(false);
   const [error, setError] = useState(false);
 
@@ -11,7 +11,7 @@ export const useFetch = (url: string) => {
     
     const loadData = async() => {
       setLoad(true);
-      if(info){
+      if(info.length !== 0){
         try {
           setLoad(true);
           const data = await axios.get(url);
@@ -21,7 +21,7 @@ export const useFetch = (url: string) => {
         }
         
       }else{
-        const data = await axios.get("/places")
+        const data = await axios.get("/api/places")
         setInfo(data)
       }
       
